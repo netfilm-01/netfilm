@@ -1,113 +1,149 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NetFilm</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NETFILM</title>
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
-}
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
 
-body{
-    background:#111;
-    color:white;
-}
+        body{
+            background:#141414;
+            color:white;
+        }
 
-header{
-    background:#e50914;
-    padding:20px;
-    text-align:center;
-    font-size:40px;
-    font-weight:bold;
-}
+        header{
+            background:#000;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:20px 40px;
+        }
 
-.container{
-    width:90%;
-    max-width:1200px;
-    margin:30px auto;
-}
+        .logo{
+            color:#e50914;
+            font-size:35px;
+            font-weight:bold;
+        }
 
-.movie{
-    background:#222;
-    border-radius:10px;
-    padding:20px;
-    margin-bottom:20px;
-    transition:.3s;
-}
+        .search{
+            width:300px;
+            padding:12px;
+            border:none;
+            border-radius:6px;
+            background:#222;
+            color:white;
+        }
 
-.movie:hover{
-    transform:scale(1.02);
-}
+        .hero{
+            height:450px;
+            background:url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1600&auto=format&fit=crop") center/cover;
+            display:flex;
+            align-items:center;
+            padding:60px;
+        }
 
-h2{
-    margin-bottom:10px;
-}
+        .hero h1{
+            font-size:55px;
+            margin-bottom:20px;
+        }
 
-p{
-    color:#ccc;
-}
-</style>
-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 40px;
-    background:#111;
-    border-bottom:1px solid #333;
-}
+        .btn{
+            background:#e50914;
+            color:white;
+            border:none;
+            padding:15px 30px;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:18px;
+        }
 
-.logo{
-    font-size:35px;
-    color:#e50914;
-    font-weight:bold;
-}
+        .container{
+            width:90%;
+            margin:40px auto;
+        }
 
-.search{
-    width:300px;
-    padding:12px;
-    border:none;
-    border-radius:8px;
-    background:#222;
-    color:white;
-    font-size:16px;
-}
+        h2{
+            margin-bottom:20px;
+        }
 
-.search:focus{
-    outline:none;
-}
+        .movies{
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+            gap:20px;
+        }
+
+        .movie{
+            background:#222;
+            border-radius:10px;
+            overflow:hidden;
+            transition:.3s;
+        }
+
+        .movie:hover{
+            transform:scale(1.05);
+        }
+
+        .movie img{
+            width:100%;
+            display:block;
+        }
+
+        .movie h3{
+            padding:15px;
+        }
+
+        .movie p{
+            padding:0 15px 15px;
+            color:#bbb;
+        }
+    </style>
 </head>
 <body>
 
 <header>
     <div class="logo">NETFILM</div>
 
-    <input
-        type="text"
-        placeholder="Film ara..."
-        class="search"
-    >
+    <input class="search" placeholder="Film ara...">
 </header>
+
+<section class="hero">
+    <div>
+        <h1>NETFILM</h1>
+        <button class="btn">Filmleri Keşfet</button>
+    </div>
+</section>
 
 <div class="container">
 
+<h2>Popüler Filmler</h2>
+
+<div class="movies">
+
 <div class="movie">
-<h2>Interstellar</h2>
+<img src="https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg">
+<h3>Interstellar</h3>
 <p>IMDb ⭐ 8.7</p>
 </div>
 
 <div class="movie">
-<h2>Inception</h2>
+<img src="https://image.tmdb.org/t/p/w500/8IB2e4r4oVhHnANbnm7O3Tj6tF8.jpg">
+<h3>Inception</h3>
 <p>IMDb ⭐ 8.8</p>
 </div>
 
 <div class="movie">
-<h2>The Batman</h2>
+<img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg">
+<h3>The Batman</h3>
 <p>IMDb ⭐ 7.8</p>
+</div>
+
 </div>
 
 </div>
