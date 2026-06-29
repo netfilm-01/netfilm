@@ -2,24 +2,30 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NETFILM</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-<h1>NETFILM</h1>
-<input id="search" placeholder="Film ara...">
+    <h1>NETFILM</h1>
+    <input id="search" type="text" placeholder="Film ara...">
 </header>
 
+<!-- FEATURED -->
 <div id="featured"></div>
 
-<h2 class="section-title">🔥 Popüler Filmler</h2>
-<div id="movies" class="row"></div>
+<h2 class="section-title">🔥 Popüler</h2>
+<div class="row" id="movies"></div>
 
+<h2 class="section-title">⭐ En Çok Oy Alanlar</h2>
+<div class="row" id="toprated"></div>
+
+<!-- MODAL -->
 <div id="modal" class="modal">
     <div class="modal-content">
-        <span id="close">X</span>
+        <span id="close">×</span>
         <div id="modal-body"></div>
     </div>
 </div>
