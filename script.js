@@ -3,19 +3,31 @@ console.log("JS ÇALIŞIYOR");
 const API_KEY = "eb6fe5281c6935ad7c261dd8a59aa902";
 
 const moviesDiv = document.getElementById("movies");
+const featured = document.getElementById("featured");
 const searchInput = document.getElementById("search");
 
 const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modal-body");
 const closeBtn = document.getElementById("close");
 
-async function loadMovies(url){
-    const res = await fetch(url);
-    const data = await res.json();
+// 🎬 featured film
+function setFeatured(movie){
+    featured.style.backgroundImage =
+        `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`;
 
+    featured.innerHTML = `
+        <div>
+            <h2>${movie.title}</h2>
+            <p>${movie.overview || ""}</p>
+        </div>
+    `;
+}
+
+// 🎞️ film listesi
+function renderMovies(movies){
     moviesDiv.innerHTML = "";
 
-    data.results.forEach(movie => {
+    movies.forEach(movie => {
         if(!movie.poster_path) return;
 
         const div = document.createElement("div");
@@ -32,7 +44,20 @@ async function loadMovies(url){
     });
 }
 
-// CLICK FIX (EN SAĞLAM YÖNTEM)
+// 🌐 yükle
+async function loadMovies(url){
+    const res = await fetch(url);
+    const data = await res.json();
+
+    renderMovies(data.results);
+
+    // featured = ilk film
+    if(data.results.length > 0){
+        setFeatured(data.results[0]);
+    }
+}
+
+// 🎬 detay + fragman
 moviesDiv.addEventListener("click", async (e) => {
     const card = e.target.closest(".movie");
     if(!card) return;
@@ -53,18 +78,19 @@ moviesDiv.addEventListener("click", async (e) => {
     modal.style.display = "flex";
 });
 
+// ❌ modal kapat
 closeBtn.onclick = () => modal.style.display = "none";
 
 window.onclick = (e) => {
     if(e.target == modal) modal.style.display = "none";
 };
 
-// load initial
+// 🔥 ilk yükleme
 loadMovies(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=tr-TR`);
 
-// search
-searchInput.addEventListener("input", (e) => {
-    const q = e.target.value;
+// 🔍 arama
+searchInput.addEventListener("input", async (e) => {
+    const q = e.target.value.trim();
 
     if(q.length > 2){
         loadMovies(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${q}&language=tr-TR`);
