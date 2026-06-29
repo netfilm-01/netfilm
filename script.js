@@ -1,3 +1,5 @@
+console.log("JS ÇALIŞIYOR");
+
 const API_KEY = "eb6fe5281c6935ad7c261dd8a59aa902";
 
 const moviesDiv = document.getElementById("movies");
@@ -7,91 +9,66 @@ const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modal-body");
 const closeBtn = document.getElementById("close");
 
-let moviesData = [];
-
-// 🎬 render
-function renderMovies(movies){
-    moviesData = movies;
+async function loadMovies(url){
+    const res = await fetch(url);
+    const data = await res.json();
 
     moviesDiv.innerHTML = "";
 
-    movies.forEach(movie => {
+    data.results.forEach(movie => {
         if(!movie.poster_path) return;
 
-        moviesDiv.innerHTML += `
-        <div class="movie" data-id="${movie.id}">
+        const div = document.createElement("div");
+        div.className = "movie";
+        div.dataset.id = movie.id;
+
+        div.innerHTML = `
             <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}">
             <h3>${movie.title}</h3>
             <p>⭐ ${movie.vote_average.toFixed(1)}</p>
-        </div>
         `;
+
+        moviesDiv.appendChild(div);
     });
 }
 
-// 🎬 detay + fragman
-async function openMovie(id){
-
-    const movieRes = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=tr-TR`);
-    const movie = await movieRes.json();
-
-    const videoRes = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}&language=tr-TR`);
-    const videoData = await videoRes.json();
-
-    let trailer = videoData.results.find(v => v.type === "Trailer");
-
-    let trailerHTML = trailer
-        ? `<iframe width="100%" height="315"
-            src="https://www.youtube.com/embed/${trailer.key}"
-            frameborder="0" allowfullscreen></iframe>`
-        : "<p>Fragman bulunamadı 😢</p>";
-
-    modalBody.innerHTML = `
-        <h2>${movie.title}</h2>
-        <p>⭐ ${movie.vote_average}</p>
-        <p>${movie.overview || "Açıklama yok."}</p>
-        <h3>🎬 Fragman</h3>
-        ${trailerHTML}
-    `;
-
-    modal.style.display = "flex";
-}
-
-// 🖱️ EVENT DELEGATION (ASIL ÇÖZÜM)
-moviesDiv.addEventListener("click", (e) => {
+// CLICK FIX (EN SAĞLAM YÖNTEM)
+moviesDiv.addEventListener("click", async (e) => {
     const card = e.target.closest(".movie");
     if(!card) return;
 
-    const id = card.getAttribute("data-id");
-    openMovie(id);
+    const id = card.dataset.id;
+
+    const res = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}&language=tr-TR`);
+    const data = await res.json();
+
+    let trailer = data.results.find(v => v.type === "Trailer");
+
+    modalBody.innerHTML = trailer
+        ? `<iframe width="100%" height="315"
+            src="https://www.youtube.com/embed/${trailer.key}"
+            allowfullscreen></iframe>`
+        : "<p>Fragman yok</p>";
+
+    modal.style.display = "flex";
 });
 
-// ❌ modal kapat
 closeBtn.onclick = () => modal.style.display = "none";
 
 window.onclick = (e) => {
-    if(e.target == modal){
-        modal.style.display = "none";
-    }
+    if(e.target == modal) modal.style.display = "none";
 };
 
-// 🌐 yükleme
-async function loadMovies(){
-    const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=tr-TR`);
-    const data = await res.json();
-    renderMovies(data.results);
-}
+// load initial
+loadMovies(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=tr-TR`);
 
-loadMovies();
-
-// 🔍 arama
-searchInput.addEventListener("input", async (e) => {
-    const q = e.target.value.trim();
+// search
+searchInput.addEventListener("input", (e) => {
+    const q = e.target.value;
 
     if(q.length > 2){
-        const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${q}&language=tr-TR`);
-        const data = await res.json();
-        renderMovies(data.results);
+        loadMovies(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${q}&language=tr-TR`);
     } else {
-        loadMovies();
+        loadMovies(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=tr-TR`);
     }
 });
