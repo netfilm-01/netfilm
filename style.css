@@ -1,0 +1,56 @@
+body{
+    margin:0;
+    background:#141414;
+    color:white;
+    font-family:Arial;
+}
+
+header{
+    background:black;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px;
+}
+
+header h1{
+    color:#e50914;
+}
+
+input{
+    width:300px;
+    padding:12px;
+    border:none;
+    border-radius:5px;
+}
+
+#movies{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:20px;
+    padding:30px;
+}
+
+.movie{
+    background:#222;
+    border-radius:10px;
+    overflow:hidden;
+    transition:.3s;
+}
+
+.movie:hover{
+    transform:scale(1.05);
+}
+
+.movie img{
+    width:100%;
+}
+
+.movie h3{
+    padding:10px;
+}
+
+.movie p{
+    padding:0 10px 10px;
+    color:#ccc;
+}
