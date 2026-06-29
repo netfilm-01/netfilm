@@ -5,148 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NETFILM</title>
 
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:Arial, Helvetica, sans-serif;
-        }
-
-        body{
-            background:#141414;
-            color:white;
-        }
-
-        header{
-            background:#000;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            padding:20px 40px;
-        }
-
-        .logo{
-            color:#e50914;
-            font-size:35px;
-            font-weight:bold;
-        }
-
-        .search{
-            width:300px;
-            padding:12px;
-            border:none;
-            border-radius:6px;
-            background:#222;
-            color:white;
-        }
-
-        .hero{
-            height:450px;
-            background:url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1600&auto=format&fit=crop") center/cover;
-            display:flex;
-            align-items:center;
-            padding:60px;
-        }
-
-        .hero h1{
-            font-size:55px;
-            margin-bottom:20px;
-        }
-
-        .btn{
-            background:#e50914;
-            color:white;
-            border:none;
-            padding:15px 30px;
-            border-radius:6px;
-            cursor:pointer;
-            font-size:18px;
-        }
-
-        .container{
-            width:90%;
-            margin:40px auto;
-        }
-
-        h2{
-            margin-bottom:20px;
-        }
-
-        .movies{
-            display:grid;
-            grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-            gap:20px;
-        }
-
-        .movie{
-            background:#222;
-            border-radius:10px;
-            overflow:hidden;
-            transition:.3s;
-        }
-
-        .movie:hover{
-            transform:scale(1.05);
-        }
-
-        .movie img{
-            width:100%;
-            display:block;
-        }
-
-        .movie h3{
-            padding:15px;
-        }
-
-        .movie p{
-            padding:0 15px 15px;
-            color:#bbb;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-    <div class="logo">NETFILM</div>
+    <h1>NETFILM</h1>
 
-    <input class="search" placeholder="Film ara...">
+    <input
+        id="search"
+        type="text"
+        placeholder="Film ara..."
+    >
 </header>
 
-<section class="hero">
-    <div>
-        <h1>NETFILM</h1>
-        <button class="btn">Filmleri Keşfet</button>
-    </div>
-</section>
+<div id="movies"></div>
 
-<div class="container">
-
-<h2>Popüler Filmler</h2>
-
-<div class="movies">
-
-<div class="movie">
-<img src="https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg">
-<h3>Interstellar</h3>
-<p>IMDb ⭐ 8.7</p>
-</div>
-
-<div class="movie">
-<img src="https://image.tmdb.org/t/p/w500/8IB2e4r4oVhHnANbnm7O3Tj6tF8.jpg">
-<h3>Inception</h3>
-<p>IMDb ⭐ 8.8</p>
-</div>
-
-<div class="movie">
-<img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg">
-<h3>The Batman</h3>
-<p>IMDb ⭐ 7.8</p>
-</div>
-
-</div>
-
-</div>
+<script src="script.js"></script>
 
 </body>
 </html>
