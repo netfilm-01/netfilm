@@ -2,6 +2,7 @@ const API_KEY = "eb6fe5281c6935ad7c261dd8a59aa902";
 
 const moviesDiv = document.getElementById("movies");
 const topRatedDiv = document.getElementById("toprated");
+const favoritesDiv = document.getElementById("favorites");
 const featured = document.getElementById("featured");
 const searchInput = document.getElementById("search");
 
@@ -9,15 +10,24 @@ const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modal-body");
 const closeBtn = document.getElementById("close");
 
-// FEATURED
+// ❤️ FAVORİLER
+let favorites = JSON.parse(localStorage.getItem("fav")) || [];
+
+function saveFav(){
+    localStorage.setItem("fav", JSON.stringify(favorites));
+}
+
+function isFav(id){
+    return favorites.includes(id);
+}
+
+// HERO
 function setFeatured(movie){
     featured.style.backgroundImage =
         `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`;
 
     featured.innerHTML = `
-        <div style="position:relative;z-index:2">
-            <h2>${movie.title}</h2>
-        </div>
+        <h2>${movie.title}</h2>
     `;
 }
 
@@ -36,6 +46,7 @@ function render(container, movies){
             <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}">
             <h3>${movie.title}</h3>
             <p>⭐ ${movie.vote_average.toFixed(1)}</p>
+            <div class="heart">${isFav(movie.id) ? "❤️" : "🤍"}</div>
         `;
 
         container.appendChild(div);
@@ -52,11 +63,25 @@ async function loadHome(){
 
     render(moviesDiv, popData.results);
     render(topRatedDiv, topData.results);
+    renderFavorites();
 
     setFeatured(popData.results[0]);
 }
 
-// OPEN MOVIE + TRAILER
+// ❤️ FAVORİLER
+async function renderFavorites(){
+    let list = [];
+
+    for(let id of favorites){
+        const res = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=tr-TR`);
+        const data = await res.json();
+        list.push(data);
+    }
+
+    render(favoritesDiv, list);
+}
+
+// 🎬 OPEN TRAILER
 async function openMovie(id){
     const res = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}&language=tr-TR`);
     const data = await res.json();
@@ -72,19 +97,33 @@ async function openMovie(id){
     modal.style.display = "flex";
 }
 
-// CLICK EVENTS
-[moviesDiv, topRatedDiv].forEach(container => {
+// CLICK SYSTEM
+[moviesDiv, topRatedDiv, favoritesDiv].forEach(container => {
     container.addEventListener("click", (e) => {
         const card = e.target.closest(".movie");
         if(!card) return;
 
-        openMovie(card.dataset.id);
+        const id = Number(card.dataset.id);
+
+        // ❤️ toggle
+        if(e.target.classList.contains("heart")){
+            if(isFav(id)){
+                favorites = favorites.filter(f => f !== id);
+            }else{
+                favorites.push(id);
+            }
+
+            saveFav();
+            loadHome();
+            return;
+        }
+
+        openMovie(id);
     });
 });
 
 // CLOSE MODAL
 closeBtn.onclick = () => modal.style.display = "none";
-
 window.onclick = (e) => {
     if(e.target == modal) modal.style.display = "none";
 };
@@ -99,6 +138,7 @@ searchInput.addEventListener("input", async (e) => {
 
         render(moviesDiv, data.results);
         topRatedDiv.innerHTML = "";
+        favoritesDiv.innerHTML = "";
     } else {
         loadHome();
     }
