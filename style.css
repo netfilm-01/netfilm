@@ -62,3 +62,34 @@ input{
     margin:0 10px 10px;
     color:#ccc;
 }
+
+/* MODAL */
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    background:#1c1c1c;
+    padding:20px;
+    border-radius:10px;
+    width:80%;
+    max-width:600px;
+    color:white;
+    position:relative;
+}
+
+#close{
+    position:absolute;
+    right:15px;
+    top:10px;
+    cursor:pointer;
+    font-size:25px;
+}
