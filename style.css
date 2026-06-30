@@ -61,6 +61,40 @@ body{
     background:#111;
 }
 
+/* YAN REKLAM ALANLARI */
+.side-ad{
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    width:140px;
+    height:500px;
+    border:2px dashed #444;
+    color:#888;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    border-radius:6px;
+    background:#111;
+    z-index:50;
+}
+
+.side-ad-left{
+    left:12px;
+}
+
+.side-ad-right{
+    right:12px;
+}
+
+/* Yan reklamlar sadece geniş ekranlarda görünsün,
+   dar ekranlarda içeriğin üzerine binmesinler */
+@media(max-width:1400px){
+    .side-ad{
+        display:none;
+    }
+}
+
 /* MOBİL */
 @media(max-width:900px){
 
