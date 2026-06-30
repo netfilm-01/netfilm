@@ -63,7 +63,11 @@ async function safeFetch(url){
 
 }
 
-/* ========= HERO ========= */
+/* ========= HERO (otomatik dönen) ========= */
+
+let heroPool = [];
+let heroIndex = 0;
+let heroTimer = null;
 
 function setFeatured(movie){
 
@@ -73,13 +77,71 @@ function setFeatured(movie){
         return;
     }
 
-    featured.style.backgroundImage =
-        `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`;
+    // Fade-out
+    featured.classList.add("fading");
 
-    featured.innerHTML = `
-        <h2>${movie.title}</h2>
-    `;
+    setTimeout(()=>{
+
+        featured.style.backgroundImage =
+            `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`;
+
+        const overview = movie.overview
+            ? movie.overview.slice(0,160) + (movie.overview.length>160 ? "…" : "")
+            : "";
+
+        featured.innerHTML = `
+            <div class="hero-content">
+                <h2>${movie.title}</h2>
+                <p class="hero-overview">${overview}</p>
+                <button class="hero-btn" data-id="${movie.id}">▶ Fragmanı İzle</button>
+            </div>
+        `;
+
+        featured.dataset.id = movie.id;
+
+        // Fade-in
+        featured.classList.remove("fading");
+
+    }, 250);
+
 }
+
+function startHeroRotation(movies){
+
+    if(!movies || movies.length === 0) return;
+
+    // En popüler ilk 6 filmden rastgele bir havuz oluştur
+    heroPool = movies.slice(0, 6);
+    heroIndex = Math.floor(Math.random() * heroPool.length);
+
+    setFeatured(heroPool[heroIndex]);
+
+    if(heroTimer) clearInterval(heroTimer);
+
+    heroTimer = setInterval(()=>{
+        heroIndex = (heroIndex + 1) % heroPool.length;
+        setFeatured(heroPool[heroIndex]);
+    }, 6000);
+
+}
+
+featured.addEventListener("click",(e)=>{
+    if(e.target.classList.contains("hero-btn")){
+        openMovie(Number(e.target.dataset.id));
+    }
+});
+
+featured.addEventListener("mouseenter",()=>{
+    if(heroTimer) clearInterval(heroTimer);
+});
+
+featured.addEventListener("mouseleave",()=>{
+    if(!heroPool.length) return;
+    heroTimer = setInterval(()=>{
+        heroIndex = (heroIndex + 1) % heroPool.length;
+        setFeatured(heroPool[heroIndex]);
+    }, 6000);
+});
 
 /* ========= RENDER ========= */
 
@@ -141,7 +203,7 @@ async function loadHome(){
     render(popularDiv, popularData ? popularData.results : []);
 
     if(popularData && popularData.results.length){
-        setFeatured(popularData.results[0]);
+        startHeroRotation(popularData.results);
     }
 
     // Türler
