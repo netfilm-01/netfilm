@@ -162,10 +162,66 @@ input{
     overflow-x:auto;
     gap:15px;
     padding:10px 20px 20px;
+    scroll-behavior:smooth;
+    cursor:grab;
+    user-select:none;
+}
+
+.row.dragging{
+    cursor:grabbing;
+    scroll-behavior:auto;
 }
 
 .row::-webkit-scrollbar{
     display:none;
+}
+
+/* SATIR OK BUTONLARI */
+.section{
+    position:relative;
+}
+
+.row-arrow{
+    position:absolute;
+    top:55%;
+    transform:translateY(-50%);
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:50%;
+    background:rgba(0,0,0,0.6);
+    color:#fff;
+    font-size:24px;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:5;
+    opacity:0;
+    transition:opacity 0.2s, background 0.2s;
+}
+
+.section:hover .row-arrow{
+    opacity:1;
+}
+
+.row-arrow:hover{
+    background:rgba(229,9,20,0.85);
+}
+
+.row-arrow-left{
+    left:6px;
+}
+
+.row-arrow-right{
+    right:6px;
+}
+
+@media(max-width:768px){
+    .row-arrow{
+        display:none;
+    }
 }
 
 .empty-msg{
