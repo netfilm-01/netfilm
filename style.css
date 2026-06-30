@@ -5,12 +5,13 @@ body{
     font-family:Arial;
 }
 
+/* HEADER */
 header{
     background:black;
     display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px;
+    flex-direction:column;
+    gap:10px;
+    padding:15px 20px;
     position:sticky;
     top:0;
     z-index:10;
@@ -18,6 +19,7 @@ header{
 
 header h1{
     color:#e50914;
+    margin:0;
 }
 
 input{
@@ -26,6 +28,29 @@ input{
     border:none;
     border-radius:6px;
     outline:none;
+}
+
+/* GENRE MENU */
+.genres{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.genres button{
+    background:#222;
+    color:white;
+    border:1px solid #333;
+    padding:6px 12px;
+    border-radius:20px;
+    cursor:pointer;
+    font-size:13px;
+    transition:0.2s;
+}
+
+.genres button:hover{
+    background:#e50914;
+    border-color:#e50914;
 }
 
 /* HERO */
