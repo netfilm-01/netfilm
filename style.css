@@ -113,10 +113,12 @@ input{
     position:absolute;
     inset:0;
     background:linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.1) 60%, transparent);
+    pointer-events:none;
 }
 
 .hero-content{
     position:relative;
+    z-index:1;
     max-width:600px;
     transition:opacity 0.25s ease;
 }
