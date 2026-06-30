@@ -6,11 +6,23 @@
 <title>NETFILM V3</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header>
     <h1>NETFILM V3</h1>
+
     <input id="search" placeholder="Film ara...">
+
+    <!-- 🎬 GENRE MENÜ -->
+    <nav class="genres">
+        <button onclick="filterGenre('all')">Tümü</button>
+        <button onclick="filterGenre('aksiyon')">Aksiyon</button>
+        <button onclick="filterGenre('fantastik')">Fantastik</button>
+        <button onclick="filterGenre('komedi')">Komedi</button>
+        <button onclick="filterGenre('korku')">Korku</button>
+        <button onclick="filterGenre('bilimkurgu')">Bilim Kurgu</button>
+    </nav>
 </header>
 
 <!-- HERO -->
