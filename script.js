@@ -314,6 +314,12 @@ async function openMovie(id){
 
     container.addEventListener("click",(e)=>{
 
+        // Sürükleyerek kaydırma sonrası tıklamayı yoksay
+        if(container.dataset.dragged === "true"){
+            container.dataset.dragged = "false";
+            return;
+        }
+
         const card=e.target.closest(".movie");
 
         if(!card) return;
@@ -392,3 +398,83 @@ window.onclick=(e)=>{
 /* ========= INIT ========= */
 
 loadHome();
+
+/* ========= ROW SCROLL (mouse wheel + drag) ========= */
+
+function enableRowScroll(row){
+
+    // Fare tekerleğiyle yatay kaydırma
+    row.addEventListener("wheel",(e)=>{
+
+        if(e.deltaY === 0) return;
+
+        e.preventDefault();
+        row.scrollLeft += e.deltaY;
+
+    }, { passive:false });
+
+    // Sürükleyerek (mouse drag) kaydırma
+    let isDown = false;
+    let startX = 0;
+    let startScroll = 0;
+
+    row.addEventListener("mousedown",(e)=>{
+        isDown = true;
+        row.classList.add("dragging");
+        startX = e.pageX;
+        startScroll = row.scrollLeft;
+        row.dataset.dragged = "false";
+    });
+
+    window.addEventListener("mouseup",()=>{
+        isDown = false;
+        row.classList.remove("dragging");
+    });
+
+    row.addEventListener("mouseleave",()=>{
+        isDown = false;
+        row.classList.remove("dragging");
+    });
+
+    row.addEventListener("mousemove",(e)=>{
+        if(!isDown) return;
+        e.preventDefault();
+        const diff = e.pageX - startX;
+        if(Math.abs(diff) > 5) row.dataset.dragged = "true";
+        const walk = diff * 1.5;
+        row.scrollLeft = startScroll - walk;
+    });
+
+}
+
+document.querySelectorAll(".row").forEach(enableRowScroll);
+
+/* ========= ROW ARROW BUTTONS ========= */
+
+function addArrowButtons(){
+
+    document.querySelectorAll(".section").forEach(section=>{
+
+        const row = section.querySelector(".row");
+        if(!row) return;
+
+        const leftBtn = document.createElement("button");
+        leftBtn.className = "row-arrow row-arrow-left";
+        leftBtn.innerHTML = "‹";
+
+        const rightBtn = document.createElement("button");
+        rightBtn.className = "row-arrow row-arrow-right";
+        rightBtn.innerHTML = "›";
+
+        leftBtn.onclick = () => row.scrollBy({ left: -row.clientWidth * 0.8, behavior:"smooth" });
+        rightBtn.onclick = () => row.scrollBy({ left: row.clientWidth * 0.8, behavior:"smooth" });
+
+        section.style.position = "relative";
+        section.appendChild(leftBtn);
+        section.appendChild(rightBtn);
+
+    });
+
+}
+
+addArrowButtons();
