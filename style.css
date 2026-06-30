@@ -5,22 +5,71 @@ body{
     font-family:Arial, sans-serif;
 }
 
-/* HEADER */
-header{
-    background:#000;
-    padding:15px 20px;
-    position:sticky;
-    top:0;
-    z-index:100;
+/* HEADER 3 KOLON */
+.topbar{
     display:flex;
-    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+    padding:15px 20px;
+    background:#000;
+    gap:15px;
+}
+
+/* SOL */
+.left h1{
+    margin:0;
+    color:#e50914;
+    font-size:24px;
+}
+
+/* ORTA */
+.center input{
+    width:300px;
+    padding:10px;
+    border:none;
+    border-radius:6px;
+    outline:none;
+}
+
+/* SAĞ REKLAM GRUP */
+.right{
+    display:flex;
     gap:10px;
 }
 
-header h1{
-    margin:0;
-    color:#e50914;
-    font-size:26px;
+/* REKLAM KUTULARI */
+.ad-box{
+    width:120px;
+    height:50px;
+    border:2px solid #fff;
+    color:#aaa;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    border-radius:6px;
+    background:#111;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+
+    .topbar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .right{
+        justify-content:space-between;
+    }
+
+    .ad-box{
+        width:100%;
+    }
+
+    .center input{
+        width:100%;
+    }
 }
 
 /* SEARCH */
