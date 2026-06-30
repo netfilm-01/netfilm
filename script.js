@@ -1,5 +1,21 @@
 const API_KEY = "eb6fe5281c6935ad7c261dd8a59aa902";
 
+/* GENRE MAP */
+const GENRES = {
+  28: "aksiyon",
+  12: "macera",
+  16: "animasyon",
+  35: "komedi",
+  80: "suç",
+  99: "belgesel",
+  18: "dram",
+  14: "fantastik",
+  27: "korku",
+  878: "bilimkurgu",
+  53: "gerilim",
+  10749: "romantik"
+};
+
 const moviesDiv = document.getElementById("movies");
 const topRatedDiv = document.getElementById("toprated");
 const favoritesDiv = document.getElementById("favorites");
@@ -10,7 +26,6 @@ const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modal-body");
 const closeBtn = document.getElementById("close");
 
-// ❤️ FAVORİLER
 let favorites = JSON.parse(localStorage.getItem("fav")) || [];
 
 function saveFav(){
@@ -21,17 +36,15 @@ function isFav(id){
     return favorites.includes(id);
 }
 
-// HERO
+/* HERO */
 function setFeatured(movie){
     featured.style.backgroundImage =
         `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`;
 
-    featured.innerHTML = `
-        <h2>${movie.title}</h2>
-    `;
+    featured.innerHTML = `<h2>${movie.title}</h2>`;
 }
 
-// RENDER
+/* RENDER */
 function render(container, movies){
     container.innerHTML = "";
 
@@ -41,6 +54,12 @@ function render(container, movies){
         const div = document.createElement("div");
         div.className = "movie";
         div.dataset.id = movie.id;
+
+        /* GENRE EKLE */
+        div.dataset.genre =
+            movie.genre_ids && movie.genre_ids.length
+                ? GENRES[movie.genre_ids[0]] || "diger"
+                : "diger";
 
         div.innerHTML = `
             <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}">
@@ -53,7 +72,7 @@ function render(container, movies){
     });
 }
 
-// LOAD HOME
+/* HOME */
 async function loadHome(){
     const pop = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=tr-TR`);
     const popData = await pop.json();
@@ -68,7 +87,7 @@ async function loadHome(){
     setFeatured(popData.results[0]);
 }
 
-// ❤️ FAVORİLER
+/* FAVORITES */
 async function renderFavorites(){
     let list = [];
 
@@ -81,7 +100,7 @@ async function renderFavorites(){
     render(favoritesDiv, list);
 }
 
-// 🎬 OPEN TRAILER
+/* MOVIE MODAL */
 async function openMovie(id){
     const res = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}&language=tr-TR`);
     const data = await res.json();
@@ -97,7 +116,7 @@ async function openMovie(id){
     modal.style.display = "flex";
 }
 
-// CLICK SYSTEM
+/* CLICK SYSTEM */
 [moviesDiv, topRatedDiv, favoritesDiv].forEach(container => {
     container.addEventListener("click", (e) => {
         const card = e.target.closest(".movie");
@@ -105,7 +124,6 @@ async function openMovie(id){
 
         const id = Number(card.dataset.id);
 
-        // ❤️ toggle
         if(e.target.classList.contains("heart")){
             if(isFav(id)){
                 favorites = favorites.filter(f => f !== id);
@@ -122,13 +140,13 @@ async function openMovie(id){
     });
 });
 
-// CLOSE MODAL
+/* CLOSE MODAL */
 closeBtn.onclick = () => modal.style.display = "none";
 window.onclick = (e) => {
     if(e.target == modal) modal.style.display = "none";
 };
 
-// SEARCH
+/* SEARCH */
 searchInput.addEventListener("input", async (e) => {
     const q = e.target.value.trim();
 
@@ -144,5 +162,19 @@ searchInput.addEventListener("input", async (e) => {
     }
 });
 
-// INIT
+/* GENRE FILTER */
+function filterGenre(genre) {
+    const all = document.querySelectorAll(".movie");
+
+    all.forEach(movie => {
+        if (genre === "all") {
+            movie.style.display = "block";
+        } else {
+            movie.style.display =
+                movie.dataset.genre === genre ? "block" : "none";
+        }
+    });
+}
+
+/* INIT */
 loadHome();
